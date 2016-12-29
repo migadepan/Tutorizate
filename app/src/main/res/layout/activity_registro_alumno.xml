@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_registro_alumno"
     android:layout_width="match_parent"
@@ -8,93 +9,151 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.migadepan.tutorizate.RegistroAlumnoActivity">
+    tools:context="com.example.migadepan.tutorizate.RegistroAlumnoActivity"
+    android:background="@android:color/white">
 
-    <TextView
-        android:text="Nombre"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/textView6" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp">
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:text="Name"
-        android:ems="10"
-        android:layout_below="@+id/textView6"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="17dp"
-        android:id="@+id/caja_nombre_alumno" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-    <TextView
-        android:text="Apellidos"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/caja_nombre_alumno"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="18dp"
-        android:id="@+id/textView7" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:text="Name"
-        android:ems="10"
-        android:layout_below="@+id/textView7"
-        android:layout_alignEnd="@+id/caja_nombre_alumno"
-        android:layout_marginTop="20dp"
-        android:id="@+id/caja_apellidos_alumno" />
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:layout_width="40dp"
+                    android:layout_marginTop="5dp"
+                    android:adjustViewBounds="true"
+                    app:srcCompat="?attr/actionModeCloseDrawable" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:text="Name"
-        android:ems="10"
-        android:layout_below="@+id/textView8"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="22dp"
-        android:id="@+id/caja_dni_alumno" />
+                <TextView
+                    android:text="Alumno/a"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView16"
+                    android:textColor="@color/Color_tuto"
+                    android:textStyle="normal|bold"
+                    android:textSize="43sp"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="37dp" />
+            </LinearLayout>
 
-    <TextView
-        android:text="DNI"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:id="@+id/textView8"
-        android:layout_below="@+id/caja_apellidos_alumno"
-        android:layout_alignParentStart="true" />
+        </LinearLayout>
 
-    <TextView
-        android:text="Facultad"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/caja_dni_alumno"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="26dp"
-        android:id="@+id/textView9" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp">
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:text="Name"
-        android:ems="10"
-        android:layout_below="@+id/textView9"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="20dp"
-        android:id="@+id/caja_facultad_alumno" />
+            <TextView
+                android:text="Nombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:id="@+id/textView6" />
 
-    <Button
-        android:text="Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="13dp"
-        android:id="@+id/btn_registro_alumno" />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:layout_below="@+id/textView6"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="10dp"
+                android:id="@+id/caja_nombre_alumno" />
+
+            <TextView
+                android:text="Apellidos :"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/caja_nombre_alumno"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="10dp"
+                android:id="@+id/textView7" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:layout_below="@+id/textView7"
+                android:layout_alignEnd="@+id/caja_nombre_alumno"
+                android:layout_marginTop="10dp"
+                android:id="@+id/caja_apellidos_alumno" />
+
+            <TextView
+                android:text="DNI :"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:id="@+id/textView8"
+                android:layout_below="@+id/caja_apellidos_alumno"
+                android:layout_alignParentStart="true" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:layout_below="@+id/textView8"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="10dp"
+                android:id="@+id/caja_dni_alumno" />
+
+            <TextView
+                android:text="Facultad :"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/caja_dni_alumno"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="26dp"
+                android:id="@+id/textView9" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:layout_below="@+id/textView9"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="20dp"
+                android:id="@+id/caja_facultad_alumno" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center">
+
+            <Button
+                android:text="Finalizar"
+                android:layout_height="60dp"
+                android:layout_below="@+id/opc_profesor"
+                android:layout_alignEnd="@+id/opc_profesor"
+                android:layout_marginTop="35dp"
+                android:id="@+id/btn_registro_alumno"
+                android:background="@color/Color_tuto"
+                android:textSize="30sp"
+                android:textAllCaps="false"
+                android:textColor="@android:color/background_light"
+                android:layout_width="300dp" />
+        </LinearLayout>
+    </LinearLayout>
+
 </RelativeLayout>

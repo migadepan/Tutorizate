@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_registro"
     android:layout_width="match_parent"
@@ -8,87 +9,159 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.migadepan.tutorizate.RegistroActivity">
+    tools:context="com.example.migadepan.tutorizate.RegistroActivity"
+    android:background="@android:color/white">
 
-    <TextView
-        android:text="Correo Electronico"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/textView3" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp">
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
-        android:ems="10"
-        android:layout_below="@+id/textView3"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="13dp"
-        android:id="@+id/caja_correo" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-    <TextView
-        android:text="Contraseña"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/caja_correo"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="13dp"
-        android:id="@+id/textView4" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:ems="10"
-        android:layout_below="@+id/textView4"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="22dp"
-        android:id="@+id/caja_password1" />
+                <ImageView
+                    app:srcCompat="?attr/actionModeCloseDrawable"
+                    android:id="@+id/imageView2"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:layout_width="40dp"
+                    android:layout_marginTop="5dp"
+                    android:adjustViewBounds="true" />
 
-    <TextView
-        android:text="Repetir Contraseña"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/caja_password1"
-        android:layout_alignParentStart="true"
-        android:id="@+id/textView5" />
+                <TextView
+                    android:text="Regístrate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView16"
+                    android:textColor="@color/Color_tuto"
+                    android:textStyle="normal|bold"
+                    android:textSize="43sp"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="37dp"/>
+            </LinearLayout>
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:ems="10"
-        android:layout_below="@+id/textView5"
-        android:layout_alignEnd="@+id/caja_password1"
-        android:layout_marginTop="15dp"
-        android:id="@+id/caja_password2" />
+        </LinearLayout>
 
-    <Switch
-        android:text="Switch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/caja_password2"
-        android:layout_toEndOf="@+id/textView5"
-        android:layout_marginTop="43dp"
-        android:id="@+id/opc_alumno" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp">
 
-    <Switch
-        android:text="Switch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/opc_alumno"
-        android:layout_alignStart="@+id/opc_alumno"
-        android:layout_marginTop="16dp"
-        android:id="@+id/opc_profesor" />
+            <TextView
+                android:text="Correo Electronico"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:id="@+id/textView3" />
 
-    <Button
-        android:text="Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/opc_profesor"
-        android:layout_alignEnd="@+id/opc_profesor"
-        android:layout_marginTop="35dp"
-        android:id="@+id/btn_sig_registro" />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:ems="10"
+                android:layout_below="@+id/textView5"
+                android:layout_alignEnd="@+id/caja_password1"
+                android:layout_marginTop="15dp"
+                android:id="@+id/caja_password2"
+                android:layout_marginBottom="20dp"/>
+
+            <TextView
+                android:text="Repetir Contraseña"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/caja_password1"
+                android:layout_alignParentStart="true"
+                android:id="@+id/textView5" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:ems="10"
+                android:layout_below="@+id/textView4"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="22dp"
+                android:id="@+id/caja_password1"
+                android:layout_marginBottom="7dp"/>
+
+            <TextView
+                android:text="Contraseña"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/caja_correo"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="13dp"
+                android:id="@+id/textView4" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:ems="10"
+                android:layout_below="@+id/textView3"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="13dp"
+                android:id="@+id/caja_correo" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_width="130dp"
+            android:layout_marginTop="20dp">
+
+            <Switch
+                android:text="Alumno/a"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/caja_password2"
+                android:layout_toEndOf="@+id/textView5"
+                android:id="@+id/opc_alumno" />
+
+            <Switch
+                android:text="Profesor/a"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/opc_alumno"
+                android:layout_alignStart="@+id/opc_alumno"
+                android:id="@+id/opc_profesor" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center">
+
+            <Button
+                android:text="Siguiente"
+                android:layout_height="60dp"
+                android:layout_below="@+id/opc_profesor"
+                android:layout_alignEnd="@+id/opc_profesor"
+                android:layout_marginTop="35dp"
+                android:id="@+id/btn_sig_registro"
+                android:background="@color/Color_tuto"
+                android:textSize="30sp"
+                android:textAllCaps="false"
+                android:textColor="@android:color/background_light"
+                android:layout_width="300dp" />
+        </LinearLayout>
+    </LinearLayout>
+
 </RelativeLayout>
