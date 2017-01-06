@@ -21,6 +21,14 @@ public class Tutoria {
         this.diaSemana = diaSemana;
     }
 
+    public String getNombreAlumno() {
+        return nombreAlumno;
+    }
+
+    public void setNombreAlumno(String nombreAlumno) {
+        this.nombreAlumno = nombreAlumno;
+    }
+
     public String getIdTutoria() {
         return idTutoria;
     }
@@ -35,14 +43,6 @@ public class Tutoria {
 
     public void setDniProfesor(String dniProfesor) {
         this.dniProfesor = dniProfesor;
-    }
-
-    public String getNombreAlumno() {
-        return nombreAlumno;
-    }
-
-    public void setNombreAlumno(String nombreAlumno) {
-        this.nombreAlumno = nombreAlumno;
     }
 
     public String getFecha() {

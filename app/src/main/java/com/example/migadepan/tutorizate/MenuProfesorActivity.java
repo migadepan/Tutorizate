@@ -76,7 +76,6 @@ public class MenuProfesorActivity extends AppCompatActivity
         ArrayList<Tutoria> misTutorias = getTutorias(dni);
         ArrayList<Tutoria> reservadas = getTutoriasReservadas(misTutorias);
 
-
         //A ver si conseguimos mostrar algo en la lista
         ListView lista = (ListView) findViewById(R.id.listViewProfesor);
         AdapterItem adapter = new AdapterItem(this, reservadas);
@@ -252,11 +251,16 @@ public class MenuProfesorActivity extends AppCompatActivity
                         String dniAlumno = reserva.getString("dniAlumno");
                         String fecha = reserva.getString("fecha");
                         UsuarioAuxiliar alumno = getDatosAlumno(dniAlumno);
-                        for (Tutoria tutoriaActual : misTutorias){
-                            if(tutoriaActual.getIdTutoria().equals(idReserva)){
-                                tutoriaActual.setFecha(fecha);
-                                tutoriaActual.setNombreAlumno(alumno.getNombre()+" "+alumno.getApellidos());
-                                tutoriasReservadas.add(tutoriaActual);
+
+                        for (int j=0; j<misTutorias.size();j++){
+                            if(misTutorias.get(j).getIdTutoria().equals(idReserva)){
+                                System.out.println("nueva reserva");
+                                System.out.println(alumno.getNombre()+" "+alumno.getDni());
+                                Tutoria tutoriaNueva = misTutorias.get(j);
+                                tutoriaNueva.setFecha(fecha);
+                                tutoriaNueva.setNombreAlumno(alumno.getNombre());
+                                tutoriasReservadas.add(tutoriaNueva);
+                                System.out.println(tutoriaNueva.getNombreAlumno());
                             }
                         }
                     }
@@ -265,6 +269,14 @@ public class MenuProfesorActivity extends AppCompatActivity
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+        /*for (Tutoria tuto: tutoriasReservadas){
+            System.out.println(tuto.getNombreAlumno()+" - "+tuto.getIdTutoria()+"-"+tuto.getDiaSemana()+"-"+tuto.getFecha()+" "+tuto.getHoraInicio());
+        }*/
+        System.out.println("Lista");
+        for(int k=0; k<tutoriasReservadas.size();k++){
+
+            System.out.println(tutoriasReservadas.get(k).getNombreAlumno());
         }
         return tutoriasReservadas;
     }
