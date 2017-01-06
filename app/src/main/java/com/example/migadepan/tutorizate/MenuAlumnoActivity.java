@@ -31,6 +31,12 @@ public class MenuAlumnoActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        //Busco con mi dni y fecha de hoy en tienetutoría
+        //Si tengo, obtengo el id de la tutoría para ir a la tabla tutoria sacar el dni del profesor
+        //Con el dni del profesor saco su nombre y correo
+
+
     }
 
     @Override

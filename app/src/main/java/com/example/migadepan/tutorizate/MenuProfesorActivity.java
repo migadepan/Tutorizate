@@ -65,11 +65,7 @@ public class MenuProfesorActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        //Aquí consulto si el profe tiene tutorías pendientes
-        /*Necesito:
-         - Saco los id de mis tutorías
-         - Miro en tieneTutoría a ver si hoy o mañana tengo y las muestro
-         */
+        //Obtengo mi dni
         Usuario usuarioConectado = Usuario.getInstancia();
         String dni = usuarioConectado.getDni();
         //Obtengo mis tutorias
@@ -260,7 +256,8 @@ public class MenuProfesorActivity extends AppCompatActivity
                                 tutoriaNueva.setFecha(fecha);
                                 tutoriaNueva.setNombreAlumno(alumno.getNombre());
                                 tutoriasReservadas.add(tutoriaNueva);
-                                System.out.println(tutoriaNueva.getNombreAlumno());
+                                System.out.println("holi "+ tutoriaNueva.getNombreAlumno());
+                                System.out.println("array0 " + tutoriasReservadas.get(j).getNombreAlumno() +" "+tutoriasReservadas.get(j).getIdTutoria());
                             }
                         }
                     }
@@ -270,14 +267,12 @@ public class MenuProfesorActivity extends AppCompatActivity
                 e.printStackTrace();
             }
         }
-        /*for (Tutoria tuto: tutoriasReservadas){
-            System.out.println(tuto.getNombreAlumno()+" - "+tuto.getIdTutoria()+"-"+tuto.getDiaSemana()+"-"+tuto.getFecha()+" "+tuto.getHoraInicio());
-        }*/
-        System.out.println("Lista");
-        for(int k=0; k<tutoriasReservadas.size();k++){
 
-            System.out.println(tutoriasReservadas.get(k).getNombreAlumno());
+        System.out.println("Lista");
+        for (Tutoria tuto: tutoriasReservadas){
+            System.out.println(tuto.getNombreAlumno()+" - "+tuto.getIdTutoria()+"-"+tuto.getDiaSemana()+"-"+tuto.getFecha()+" "+tuto.getHoraInicio());
         }
+
         return tutoriasReservadas;
     }
 
