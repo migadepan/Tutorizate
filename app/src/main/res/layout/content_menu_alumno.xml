@@ -13,4 +13,10 @@
     tools:context="com.example.migadepan.tutorizate.MenuAlumnoActivity"
     tools:showIn="@layout/app_bar_menu_alumno">
 
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:id="@+id/lista_tutorias_alumno" />
 </RelativeLayout>
