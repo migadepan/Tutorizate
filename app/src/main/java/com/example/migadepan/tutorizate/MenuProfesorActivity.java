@@ -17,7 +17,8 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -31,6 +32,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.sql.Array;
+import java.util.ArrayList;
 
 public class MenuProfesorActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -66,11 +69,15 @@ public class MenuProfesorActivity extends AppCompatActivity
          - Saco los id de mis tutorías
          - Miro en tieneTutoría a ver si hoy o mañana tengo y las muestro
          */
-        /*Usuario usuarioConectado = Usuario.getInstancia();
+        Usuario usuarioConectado = Usuario.getInstancia();
         String dni = usuarioConectado.getDni();
-        getTutorias(dni);*/
+        getTutorias(dni);
 
-        //lalala
+        //A ver si conseguimos mostrar algo en la lista
+        ListView lista = (ListView) findViewById(R.id.listViewProfesor);
+        AdapterItem adapter = new AdapterItem(this, reservadas);
+        lista.setAdapter(adapter);
+
 
     }
 
@@ -147,11 +154,8 @@ public class MenuProfesorActivity extends AppCompatActivity
     }
 
 
-
-    //Aquí me quedo pa mañana
-
-    private String getTutorias(String dni){
-        System.out.println("Entro a ver las tutorias");
+    private ArrayList<Tutoria> getTutorias(String dni){
+        ArrayList<Tutoria> misTutorias = new ArrayList();
         StrictMode.ThreadPolicy policy = new
                 StrictMode.ThreadPolicy.Builder()
                 .permitAll().build();
@@ -184,6 +188,7 @@ public class MenuProfesorActivity extends AppCompatActivity
 
                 JSONArray tutorias = jsonObject.getJSONArray("tutorias");
 
+
                 if (estado.equals("correcto")) {
                     for (int i=0; i<tutorias.length();i++){
                         JSONObject tutoria = tutorias.getJSONObject(i);
@@ -192,6 +197,8 @@ public class MenuProfesorActivity extends AppCompatActivity
                         String horaFinal = tutoria.getString("horaFinal");
                         String diaSemana = tutoria.getString("diaSemana");
                         System.out.println(idTutoria + " " + horaInicio + " " + horaFinal + " " + diaSemana);
+                        Tutoria nuevaTutoria = new Tutoria(idTutoria,dni,horaInicio,horaFinal,diaSemana);
+                        misTutorias.add(nuevaTutoria);
                     }
                     urlConnection.disconnect();
                 }
@@ -199,8 +206,144 @@ public class MenuProfesorActivity extends AppCompatActivity
                 e.printStackTrace();
             }
         }
-        return dni;
+        return misTutorias;
     }
+
+
+
+    private ArrayList<Tutoria> getTutoriasReservadas(ArrayList<Tutoria> misTutorias){
+        ArrayList<Tutoria> tutoriasReservadas = new ArrayList<Tutoria>();
+        ArrayList<String> idTutorias = new ArrayList<String>();
+        //Guardo los id para ver si están reservadas a día de hoy
+        for (Tutoria tuto:misTutorias){
+            idTutorias.add(tuto.getIdTutoria());
+        }
+
+        StrictMode.ThreadPolicy policy = new
+                StrictMode.ThreadPolicy.Builder()
+                .permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+        String tutoriasComparar = "";
+        for (String misTutos: idTutorias){
+            tutoriasComparar += misTutos + ",";
+        }
+        tutoriasComparar = tutoriasComparar.substring(0, tutoriasComparar.length()-1);
+
+        if (networkInfo != null && networkInfo.isConnected()) {
+            // crear una peticion http GET.
+            try {
+                URL url = new URL("http://tutorizate.migadepan.es/index.php?action=tutoriasReservadas");
+                String urlParameters = "ids="+tutoriasComparar;
+                byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
+                int postDataLength = postData.length;
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setDoOutput(true);
+                urlConnection.setRequestMethod("POST");
+                urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                urlConnection.setRequestProperty("charset", "utf-8");
+                urlConnection.setRequestProperty("Content-Length", Integer.toString(postDataLength));
+                urlConnection.setUseCaches(false);
+                try (DataOutputStream wr = new DataOutputStream(urlConnection.getOutputStream())) {
+                    wr.write(postData);
+                }
+                InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
+                String result = getStringFromInputStream(inputStream);
+                JSONObject jsonObject = new JSONObject(result);
+                String estado = jsonObject.getString("estado");
+                JSONArray reservas = jsonObject.getJSONArray("reservas");
+
+                if (estado.equals("correcto")) {
+                    for (int i=0; i<reservas.length();i++){
+                        JSONObject reserva = reservas.getJSONObject(i);
+                        String idReserva = reserva.getString("idTutoria");
+                        String dniAlumno = reserva.getString("dniAlumno");
+                        String fecha = reserva.getString("fecha");
+                        UsuarioAuxiliar alumno = getDatosAlumno(dniAlumno);
+
+                        for (int j=0; j<misTutorias.size();j++){
+                            if(misTutorias.get(j).getIdTutoria().equals(idReserva)){
+                                System.out.println("nueva reserva");
+                                System.out.println(alumno.getNombre()+" "+alumno.getDni());
+                                Tutoria tutoriaNueva = misTutorias.get(j);
+                                tutoriaNueva.setFecha(fecha);
+                                tutoriaNueva.setNombreAlumno(alumno.getNombre());
+                                tutoriasReservadas.add(tutoriaNueva);
+                                System.out.println("holi "+ tutoriaNueva.getNombreAlumno());
+                                System.out.println("array0 " + tutoriasReservadas.get(j).getNombreAlumno() +" "+tutoriasReservadas.get(j).getIdTutoria());
+                            }
+                        }
+                    }
+                    urlConnection.disconnect();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        System.out.println("Lista");
+        for (Tutoria tuto: tutoriasReservadas){
+            System.out.println(tuto.getNombreAlumno()+" - "+tuto.getIdTutoria()+"-"+tuto.getDiaSemana()+"-"+tuto.getFecha()+" "+tuto.getHoraInicio());
+        }
+
+        return tutoriasReservadas;
+    }
+
+
+
+    private UsuarioAuxiliar getDatosAlumno(String dni){
+        StrictMode.ThreadPolicy policy = new
+                StrictMode.ThreadPolicy.Builder()
+                .permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+        if (networkInfo != null && networkInfo.isConnected()) {
+            // crear una peticion http GET.
+            try {
+                URL url = new URL("http://tutorizate.migadepan.es/index.php?action=datosUsuario");
+                String urlParameters = "dni="+dni;
+                byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
+                int postDataLength = postData.length;
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setDoOutput(true);
+                urlConnection.setRequestMethod("POST");
+                urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                urlConnection.setRequestProperty("charset", "utf-8");
+                urlConnection.setRequestProperty("Content-Length", Integer.toString(postDataLength));
+                urlConnection.setUseCaches(false);
+                try (DataOutputStream wr = new DataOutputStream(urlConnection.getOutputStream())) {
+                    wr.write(postData);
+                }
+                InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
+                String result = getStringFromInputStream(inputStream);
+                JSONObject jsonObject = new JSONObject(result);
+                String estado = jsonObject.getString("estado");
+
+                if (estado.equals("correcto")) {
+                    String msg = jsonObject.getString("msg");
+                    JSONObject usuario = jsonObject.getJSONObject("usuario");
+                    String dniAlumno = usuario.getString("DNI");
+                    String nombre = usuario.getString("nombre");
+                    String apellidos = usuario.getString("apellidos");
+                    String email = usuario.getString("email");
+                    UsuarioAuxiliar usuarioAux = new UsuarioAuxiliar(dniAlumno,nombre,apellidos,email);
+                    urlConnection.disconnect();
+                    return usuarioAux;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+
 
     //Funcion para convertir un InputStream a String
     private static String getStringFromInputStream(InputStream is) {

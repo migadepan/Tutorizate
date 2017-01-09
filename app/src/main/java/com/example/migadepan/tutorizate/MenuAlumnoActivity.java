@@ -1,6 +1,12 @@
 package com.example.migadepan.tutorizate;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
@@ -11,7 +17,6 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 public class MenuAlumnoActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -34,6 +39,26 @@ public class MenuAlumnoActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        //Busco con mi dni en tienetutoría
+        //Si tengo, obtengo el id de la tutoría para ir a la tabla tutoria sacar el dni del profesor
+        //Con el dni del profesor saco su nombre y correo
+        Usuario usuarioConectado = Usuario.getInstancia();
+        ArrayList<Tutoria> misTutorias = getTutorias(usuarioConectado.getDni());
+        //Añado los detalles y el dni del profesor
+        for (Tutoria tuto:misTutorias){
+            getDetallesTutoria(tuto);
+            getDetallesProfesor(tuto);
+        }
+
+        for (Tutoria tuto:misTutorias){
+            System.out.println(tuto.getNombreAlumno()+" "+tuto.getIdTutoria()+" "+tuto.getFecha()+" "+tuto.getDniProfesor()+" "+tuto.getNombreProfesor());
+        }
+        //A ver si conseguimos mostrar algo en la lista
+        ListView lista = (ListView) findViewById(R.id.lista_tutorias_alumno);
+        AdapterTutoriasAlumno adapter = new AdapterTutoriasAlumno(this, misTutorias);
+        lista.setAdapter(adapter);
+
     }
 
     @Override
@@ -106,5 +131,184 @@ public class MenuAlumnoActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+
+    private void getDetallesProfesor(Tutoria tutoria){
+        String dni = tutoria.getDniProfesor();
+        StrictMode.ThreadPolicy policy = new
+                StrictMode.ThreadPolicy.Builder()
+                .permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+        if (networkInfo != null && networkInfo.isConnected()) {
+            // crear una peticion http GET.
+            try {
+                URL url = new URL("http://tutorizate.migadepan.es/index.php?action=datosUsuario");
+                String urlParameters = "dni="+dni;
+                byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
+                int postDataLength = postData.length;
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setDoOutput(true);
+                urlConnection.setRequestMethod("POST");
+                urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                urlConnection.setRequestProperty("charset", "utf-8");
+                urlConnection.setRequestProperty("Content-Length", Integer.toString(postDataLength));
+                urlConnection.setUseCaches(false);
+                try (DataOutputStream wr = new DataOutputStream(urlConnection.getOutputStream())) {
+                    wr.write(postData);
+                }
+                InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
+                String result = getStringFromInputStream(inputStream);
+                JSONObject jsonObject = new JSONObject(result);
+                String estado = jsonObject.getString("estado");
+
+                if (estado.equals("correcto")) {
+                    String msg = jsonObject.getString("msg");
+                    JSONObject usuario = jsonObject.getJSONObject("usuario");
+                    String dniAlumno = usuario.getString("DNI");
+                    String nombre = usuario.getString("nombre");
+                    String apellidos = usuario.getString("apellidos");
+                    String email = usuario.getString("email");
+                    tutoria.setNombreProfesor(nombre+" "+apellidos);
+                    tutoria.setMailProfesor(email);
+                    urlConnection.disconnect();
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private Tutoria getDetallesTutoria(Tutoria tutoria){
+        String id = tutoria.getIdTutoria();
+        StrictMode.ThreadPolicy policy = new
+                StrictMode.ThreadPolicy.Builder()
+                .permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+        if (networkInfo != null && networkInfo.isConnected()) {
+            // crear una peticion http GET.
+            try {
+                URL url = new URL("http://tutorizate.migadepan.es/index.php?action=dniProfesor");
+                String urlParameters = "id="+id;
+                byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
+                int postDataLength = postData.length;
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setDoOutput(true);
+                urlConnection.setRequestMethod("POST");
+                urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                urlConnection.setRequestProperty("charset", "utf-8");
+                urlConnection.setRequestProperty("Content-Length", Integer.toString(postDataLength));
+                urlConnection.setUseCaches(false);
+                try (DataOutputStream wr = new DataOutputStream(urlConnection.getOutputStream())) {
+                    wr.write(postData);
+                }
+                InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
+                String result = getStringFromInputStream(inputStream);
+                JSONObject jsonObject = new JSONObject(result);
+                String dniProfesor = jsonObject.getString("dniProfesor");
+                String horaInicio = jsonObject.getString("horaInicio");
+                String horaFinal = jsonObject.getString("horaFinal");
+                String diaSemana = jsonObject.getString("diaSemana");
+
+                tutoria.setDniProfesor(dniProfesor);
+                tutoria.setHoraInicio(horaInicio);
+                tutoria.setHoraFinal(horaFinal);
+                tutoria.setDiaSemana(diaSemana);
+
+                urlConnection.disconnect();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return tutoria;
+    }
+
+
+
+
+
+
+    private ArrayList<Tutoria> getTutorias(String dni){
+        ArrayList<Tutoria> misTutorias = new ArrayList<Tutoria>();
+        StrictMode.ThreadPolicy policy = new
+                StrictMode.ThreadPolicy.Builder()
+                .permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+        if (networkInfo != null && networkInfo.isConnected()) {
+            // crear una peticion http GET.
+            try {
+                URL url = new URL("http://tutorizate.migadepan.es/index.php?action=tutoriasAlumno");
+                String urlParameters = "dni="+dni;
+                byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
+                int postDataLength = postData.length;
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setDoOutput(true);
+                urlConnection.setRequestMethod("POST");
+                urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                urlConnection.setRequestProperty("charset", "utf-8");
+                urlConnection.setRequestProperty("Content-Length", Integer.toString(postDataLength));
+                urlConnection.setUseCaches(false);
+                try (DataOutputStream wr = new DataOutputStream(urlConnection.getOutputStream())) {
+                    wr.write(postData);
+                }
+                InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
+                String result = getStringFromInputStream(inputStream);
+                JSONObject jsonObject = new JSONObject(result);
+                String estado = jsonObject.getString("estado");
+                JSONArray tutorias = jsonObject.getJSONArray("tutorias");
+
+                if (estado.equals("correcto")) {
+                    for (int i=0; i<tutorias.length();i++){
+                        JSONObject tutoria = tutorias.getJSONObject(i);
+                        String idTutoria = tutoria.getString("idTutoria");
+                        String fecha = tutoria.getString("fecha");
+                        Tutoria nuevaTutoria = new Tutoria(idTutoria,dni,fecha);
+                        misTutorias.add(nuevaTutoria);
+                    }
+                    urlConnection.disconnect();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return misTutorias;
+    }
+
+    //Funcion para convertir un InputStream a String
+    private static String getStringFromInputStream(InputStream is) {
+        BufferedReader br = null;
+        StringBuilder sb = new StringBuilder();
+        String line;
+        try {
+            br = new BufferedReader(new InputStreamReader(is));
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return sb.toString();
     }
 }
