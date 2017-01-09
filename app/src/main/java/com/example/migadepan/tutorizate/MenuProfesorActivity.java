@@ -46,15 +46,6 @@ public class MenuProfesorActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -71,6 +62,12 @@ public class MenuProfesorActivity extends AppCompatActivity
         //Obtengo mis tutorias
         ArrayList<Tutoria> misTutorias = getTutorias(dni);
         ArrayList<Tutoria> reservadas = getTutoriasReservadas(misTutorias);
+
+        System.out.println("Lista");
+        for (Tutoria tuto: reservadas){
+            getDatosAlumno(tuto);
+            System.out.println(tuto.getDniAlumno()+" "+tuto.getNombreAlumno()+" - "+tuto.getIdTutoria()+"-"+tuto.getDiaSemana()+"-"+tuto.getFecha()+" "+tuto.getHoraInicio());
+        }
 
         //A ver si conseguimos mostrar algo en la lista
         ListView lista = (ListView) findViewById(R.id.listViewProfesor);
@@ -196,7 +193,7 @@ public class MenuProfesorActivity extends AppCompatActivity
 
 
     private ArrayList<Tutoria> getTutoriasReservadas(ArrayList<Tutoria> misTutorias){
-        ArrayList<Tutoria> tutoriasReservadas = new ArrayList<Tutoria>();
+        ArrayList<Tutoria> lasReservadas = new ArrayList<Tutoria>();
         ArrayList<String> idTutorias = new ArrayList<String>();
         //Guardo los id para ver si están reservadas a día de hoy
         for (Tutoria tuto:misTutorias){
@@ -246,18 +243,17 @@ public class MenuProfesorActivity extends AppCompatActivity
                         String idReserva = reserva.getString("idTutoria");
                         String dniAlumno = reserva.getString("dniAlumno");
                         String fecha = reserva.getString("fecha");
-                        UsuarioAuxiliar alumno = getDatosAlumno(dniAlumno);
 
-                        for (int j=0; j<misTutorias.size();j++){
-                            if(misTutorias.get(j).getIdTutoria().equals(idReserva)){
-                                System.out.println("nueva reserva");
-                                System.out.println(alumno.getNombre()+" "+alumno.getDni());
-                                Tutoria tutoriaNueva = misTutorias.get(j);
-                                tutoriaNueva.setFecha(fecha);
-                                tutoriaNueva.setNombreAlumno(alumno.getNombre());
-                                tutoriasReservadas.add(tutoriaNueva);
-                                System.out.println("holi "+ tutoriaNueva.getNombreAlumno());
-                                System.out.println("array0 " + tutoriasReservadas.get(j).getNombreAlumno() +" "+tutoriasReservadas.get(j).getIdTutoria());
+                        for (Tutoria tutori: misTutorias){
+                            if(tutori.getIdTutoria().equals(idReserva)){
+                                Tutoria nueva = new Tutoria(tutori.getIdTutoria(),tutori.getNombreAlumno(),tutori.getFecha());
+                                nueva.setHoraInicio(tutori.getHoraInicio());
+                                nueva.setHoraFinal(tutori.getHoraFinal());
+                                nueva.setDiaSemana(tutori.getDiaSemana());
+                                nueva.setDniAlumno(dniAlumno);
+                                System.out.println("Dni alumno " +dniAlumno);
+                                nueva.setFecha(fecha);
+                                lasReservadas.add(nueva);
                             }
                         }
                     }
@@ -267,18 +263,12 @@ public class MenuProfesorActivity extends AppCompatActivity
                 e.printStackTrace();
             }
         }
-
-        System.out.println("Lista");
-        for (Tutoria tuto: tutoriasReservadas){
-            System.out.println(tuto.getNombreAlumno()+" - "+tuto.getIdTutoria()+"-"+tuto.getDiaSemana()+"-"+tuto.getFecha()+" "+tuto.getHoraInicio());
-        }
-
-        return tutoriasReservadas;
+        return lasReservadas;
     }
 
 
 
-    private UsuarioAuxiliar getDatosAlumno(String dni){
+    private void getDatosAlumno(Tutoria tutoria){
         StrictMode.ThreadPolicy policy = new
                 StrictMode.ThreadPolicy.Builder()
                 .permitAll().build();
@@ -287,6 +277,7 @@ public class MenuProfesorActivity extends AppCompatActivity
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
+        String dni = tutoria.getDniAlumno();
         if (networkInfo != null && networkInfo.isConnected()) {
             // crear una peticion http GET.
             try {
@@ -316,15 +307,15 @@ public class MenuProfesorActivity extends AppCompatActivity
                     String nombre = usuario.getString("nombre");
                     String apellidos = usuario.getString("apellidos");
                     String email = usuario.getString("email");
-                    UsuarioAuxiliar usuarioAux = new UsuarioAuxiliar(dniAlumno,nombre,apellidos,email);
+                    tutoria.setNombreAlumno(nombre+" "+apellidos);
+                    tutoria.setMailAlumno(email);
                     urlConnection.disconnect();
-                    return usuarioAux;
+
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        return null;
     }
 
 

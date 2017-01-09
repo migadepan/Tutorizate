@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONObject;
@@ -108,6 +109,21 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
+
+
+        TextView btn_registro = (TextView) findViewById(R.id.btn_registro);
+        btn_registro.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent actividad_registro = new Intent(getApplicationContext(), RegistroActivity.class);
+                startActivity(actividad_registro);
+            }
+        });
+
+
+
+
+
     }
 
 

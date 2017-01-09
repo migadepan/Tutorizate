@@ -16,7 +16,7 @@
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerHorizontal="true"
+        android:id="@+id/lista_tutorias_alumno"
         android:layout_alignParentTop="true"
-        android:id="@+id/lista_tutorias_alumno" />
+        android:layout_alignParentStart="true" />
 </RelativeLayout>

@@ -14,6 +14,8 @@ public class Tutoria {
     private String diaSemana;
     private String nombreProfesor;
     private String mailProfesor;
+    private String dniAlumno;
+    private String mailAlumno;
 
     public Tutoria(String idTutoria, String nombreAlumno, String fecha) {
         this.idTutoria = idTutoria;
@@ -27,6 +29,22 @@ public class Tutoria {
         this.horaInicio = horaInicio;
         this.horaFinal = horaFinal;
         this.diaSemana = diaSemana;
+    }
+
+    public String getDniAlumno() {
+        return dniAlumno;
+    }
+
+    public void setDniAlumno(String dniAlumno) {
+        this.dniAlumno = dniAlumno;
+    }
+
+    public String getMailAlumno() {
+        return mailAlumno;
+    }
+
+    public void setMailAlumno(String mailAlumno) {
+        this.mailAlumno = mailAlumno;
     }
 
     public String getNombreAlumno() {
