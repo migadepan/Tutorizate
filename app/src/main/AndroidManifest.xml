@@ -21,11 +21,13 @@
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity" />
         <activity android:name=".LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <!--
+               <intent-filter>
+                   <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+                   <category android:name="android.intent.category.LAUNCHER" />
+               </intent-filter>
+            -->
         </activity>
         <activity android:name=".RegistroProfesorActivity">
 
@@ -60,11 +62,29 @@
         <activity
             android:name=".MenuAlumnoActivity"
             android:label="@string/title_activity_menu_alumno"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar">
+
+            <!--
+                <intent-filter>
+                    <action android:name="android.intent.action.MAIN" />
+
+                    <category android:name="android.intent.category.LAUNCHER" />
+                </intent-filter>
+             -->
+
+        </activity>
         <activity
             android:name=".MenuProfesorActivity"
             android:label="@string/title_activity_menu_profesor"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+
+               <intent-filter>
+                   <action android:name="android.intent.action.MAIN" />
+
+                   <category android:name="android.intent.category.LAUNCHER" />
+               </intent-filter>
+
+        </activity>
     </application>
 
 </manifest>

@@ -6,18 +6,18 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.TextView;
+import android.view.View;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -66,9 +66,9 @@ public class MenuProfesorActivity extends AppCompatActivity
          - Saco los id de mis tutorías
          - Miro en tieneTutoría a ver si hoy o mañana tengo y las muestro
          */
-        Usuario usuarioConectado = Usuario.getInstancia();
+        /*Usuario usuarioConectado = Usuario.getInstancia();
         String dni = usuarioConectado.getDni();
-        getTutorias(dni);
+        getTutorias(dni);*/
 
         //lalala
 
@@ -88,7 +88,30 @@ public class MenuProfesorActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_profesor, menu);
-        return true;
+
+        final MenuItem searchItem = menu.findItem(R.id.action_search_p);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+
+        //permite modificar el hint que el EditText muestra por defecto
+        searchView.setQueryHint(getText(R.string.search));
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                //se oculta el EditText
+                searchView.setQuery("", false);
+                searchView.setIconified(true);
+
+                return true;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                System.out.println(newText);
+
+                return true;
+            }
+        });
+
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -99,7 +122,7 @@ public class MenuProfesorActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_search) {
             return true;
         }
 
@@ -112,17 +135,9 @@ public class MenuProfesorActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_inicio_p) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_horario) {
 
         }
 
