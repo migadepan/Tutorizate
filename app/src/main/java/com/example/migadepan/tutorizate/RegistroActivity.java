@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -81,13 +82,11 @@ public class RegistroActivity extends AppCompatActivity {
                         Intent actividad_registro_alumno = new Intent(getApplicationContext(), RegistroAlumnoActivity.class);
                         actividad_registro_alumno.putExtra("correo",caja_email.getText().toString());
                         actividad_registro_alumno.putExtra("password",caja_psw1.getText().toString());
-                        actividad_registro_alumno.putExtra("alumno",true);
                         startActivity(actividad_registro_alumno);
                     }else{
                         Intent actividad_registro_profe = new Intent(getApplicationContext(), RegistroProfesorActivity.class);
                         actividad_registro_profe.putExtra("correo",caja_email.getText().toString());
                         actividad_registro_profe.putExtra("password",caja_psw1.getText().toString());
-                        actividad_registro_profe.putExtra("alumno",false);
                         startActivity(actividad_registro_profe);
                     }
 
@@ -96,6 +95,14 @@ public class RegistroActivity extends AppCompatActivity {
         });
 
 
+        ImageView btnAtras = (ImageView) findViewById(R.id.btn_atras_registro);
+        btnAtras.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent login = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(login);
+            }
+        });
 
     }
 }

@@ -5,11 +5,20 @@
         <item
             android:id="@+id/nav_inicio_p"
             android:icon="@drawable/ic_archive"
-            android:title="Inicio" />
+            android:title="Tutorias reservadas" />
         <item
-            android:id="@+id/nav_horario"
+        android:id="@+id/nav_horario"
+        android:icon="@drawable/ic_menu_send"
+        android:title="Horario Tutoria" />
+        <item
+            android:id="@+id/nav_info_personal"
             android:icon="@drawable/ic_menu_send"
-            android:title="Horario Tutoria" />
+            android:title="Información Personal" />
+        <item
+            android:id="@+id/nav_estado"
+            android:icon="@drawable/ic_menu_send"
+            android:title="Mi Estado" />
+
     </group>
 
 </menu>

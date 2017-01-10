@@ -13,10 +13,15 @@
     tools:context="com.example.migadepan.tutorizate.MenuProfesorActivity"
     tools:showIn="@layout/app_bar_menu_profesor">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt_aviso_profesor" />
+
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/listViewProfesor"
         android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentStart="true" />
 </RelativeLayout>

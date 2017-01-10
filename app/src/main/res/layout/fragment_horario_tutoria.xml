@@ -1,0 +1,71 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    tools:context="com.example.migadepan.tutorizate.HorarioTutoriaFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:weightSum="1">
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/listView_misTutorias"
+                android:layout_weight="0.61" />
+
+            <LinearLayout
+                android:id="@+id/miLinearLayout"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/btn_añadir_mi_tutoria"
+                android:layout_alignBottom="@+id/btn_añadir_mi_tutoria"
+                android:weightSum="1">
+
+                <Spinner
+                    android:layout_width="82dp"
+                    android:layout_height="match_parent"
+                    android:id="@+id/dias_semana" />
+
+                <EditText
+                    android:layout_width="71dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:ems="10"
+                    android:id="@+id/la_hora_inicio"
+                    android:hint="Hora Inicio"
+                    android:layout_weight="0.52" />
+
+                <EditText
+                    android:layout_width="77dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:ems="10"
+                    android:id="@+id/la_hora_fin"
+                    android:hint="Hora Fin"
+                    android:layout_weight="0.42" />
+
+                <Button
+                    android:text="+"
+                    android:layout_width="47dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btn_añadir_mi_tutoria" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.view.View;
@@ -17,11 +18,25 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 
 public class MenuAlumnoActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
-    TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,24 +56,20 @@ public class MenuAlumnoActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         //Busco con mi dni en tienetutoría
-        //Si tengo, obtengo el id de la tutoría para ir a la tabla tutoria sacar el dni del profesor
-        //Con el dni del profesor saco su nombre y correo
         Usuario usuarioConectado = Usuario.getInstancia();
         ArrayList<Tutoria> misTutorias = getTutorias(usuarioConectado.getDni());
         //Añado los detalles y el dni del profesor
-        for (Tutoria tuto:misTutorias){
-            getDetallesTutoria(tuto);
-            getDetallesProfesor(tuto);
-        }
+        if(misTutorias.size()!=0){
+            for (Tutoria tuto:misTutorias){
+                getDetallesTutoria(tuto);
+                getDetallesProfesor(tuto);
+            }
 
-        for (Tutoria tuto:misTutorias){
-            System.out.println(tuto.getNombreAlumno()+" "+tuto.getIdTutoria()+" "+tuto.getFecha()+" "+tuto.getDniProfesor()+" "+tuto.getNombreProfesor());
+            //A ver si conseguimos mostrar algo en la lista
+            ListView lista = (ListView) findViewById(R.id.lista_tutorias_alumno);
+            AdapterTutoriasAlumno adapter = new AdapterTutoriasAlumno(this, misTutorias);
+            lista.setAdapter(adapter);
         }
-        //A ver si conseguimos mostrar algo en la lista
-        ListView lista = (ListView) findViewById(R.id.lista_tutorias_alumno);
-        AdapterTutoriasAlumno adapter = new AdapterTutoriasAlumno(this, misTutorias);
-        lista.setAdapter(adapter);
-
     }
 
     @Override
@@ -269,9 +280,8 @@ public class MenuAlumnoActivity extends AppCompatActivity
                 String result = getStringFromInputStream(inputStream);
                 JSONObject jsonObject = new JSONObject(result);
                 String estado = jsonObject.getString("estado");
-                JSONArray tutorias = jsonObject.getJSONArray("tutorias");
-
                 if (estado.equals("correcto")) {
+                    JSONArray tutorias = jsonObject.getJSONArray("tutorias");
                     for (int i=0; i<tutorias.length();i++){
                         JSONObject tutoria = tutorias.getJSONObject(i);
                         String idTutoria = tutoria.getString("idTutoria");

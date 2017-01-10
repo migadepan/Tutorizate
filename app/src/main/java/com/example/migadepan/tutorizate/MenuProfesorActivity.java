@@ -1,6 +1,7 @@
 package com.example.migadepan.tutorizate;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -8,6 +9,9 @@ import android.os.StrictMode;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -18,6 +22,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -54,28 +59,27 @@ public class MenuProfesorActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
-        //Aquí consulto si el profe tiene tutorías pendientes
-        /*Necesito:
-         - Saco los id de mis tutorías
-         - Miro en tieneTutoría a ver si hoy o mañana tengo y las muestro
-         */
+        //Obtengo mi dni
         Usuario usuarioConectado = Usuario.getInstancia();
         String dni = usuarioConectado.getDni();
-        getTutorias(dni);
+        //Obtengo mis tutorias
+        ArrayList<Tutoria> misTutorias = getTutorias(dni);
+        if(misTutorias.size()!=0){
+            ArrayList<Tutoria> reservadas = getTutoriasReservadas(misTutorias);
 
-        System.out.println("Lista");
-        for (Tutoria tuto: reservadas){
-            getDatosAlumno(tuto);
-            System.out.println(tuto.getDniAlumno()+" "+tuto.getNombreAlumno()+" - "+tuto.getIdTutoria()+"-"+tuto.getDiaSemana()+"-"+tuto.getFecha()+" "+tuto.getHoraInicio());
+            if(reservadas.size()!=0){
+                System.out.println("Lista");
+                for (Tutoria tuto: reservadas){
+                    getDatosAlumno(tuto);
+                    System.out.println(tuto.getDniAlumno()+" "+tuto.getNombreAlumno()+" - "+tuto.getIdTutoria()+"-"+tuto.getDiaSemana()+"-"+tuto.getFecha()+" "+tuto.getHoraInicio());
+                }
+
+                //A ver si conseguimos mostrar algo en la lista
+                ListView lista = (ListView) findViewById(R.id.listViewProfesor);
+                AdapterItem adapter = new AdapterItem(this, reservadas);
+                lista.setAdapter(adapter);
+            }
         }
-
-        //A ver si conseguimos mostrar algo en la lista
-        ListView lista = (ListView) findViewById(R.id.listViewProfesor);
-        AdapterItem adapter = new AdapterItem(this, reservadas);
-        lista.setAdapter(adapter);
-
-
     }
 
     @Override
@@ -140,8 +144,19 @@ public class MenuProfesorActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_inicio_p) {
-            // Handle the camera action
+            //Recargo el activity con la lsita de reservas para hoy
+            Intent tutos_profe = new Intent(getApplicationContext(), MenuProfesorActivity.class);
+            startActivity(tutos_profe);
         } else if (id == R.id.nav_horario) {
+            //Mostrar las tutorias en un fragment
+            FragmentManager FM = getSupportFragmentManager();
+            FragmentTransaction FT = FM.beginTransaction();
+            Fragment fragment = new HorarioTutoriaFragment();
+            FT.replace(R.id.content_menu_profesor, fragment);
+            FT.commit();
+        } else if (id == R.id.nav_info_personal){
+
+        } else if (id == R.id.nav_estado){
 
         }
 
@@ -182,11 +197,8 @@ public class MenuProfesorActivity extends AppCompatActivity
                 String result = getStringFromInputStream(inputStream);
                 JSONObject jsonObject = new JSONObject(result);
                 String estado = jsonObject.getString("estado");
-
-                JSONArray tutorias = jsonObject.getJSONArray("tutorias");
-
-
                 if (estado.equals("correcto")) {
+                    JSONArray tutorias = jsonObject.getJSONArray("tutorias");
                     for (int i=0; i<tutorias.length();i++){
                         JSONObject tutoria = tutorias.getJSONObject(i);
                         String idTutoria = tutoria.getString("id");
@@ -251,9 +263,8 @@ public class MenuProfesorActivity extends AppCompatActivity
                 String result = getStringFromInputStream(inputStream);
                 JSONObject jsonObject = new JSONObject(result);
                 String estado = jsonObject.getString("estado");
-                JSONArray reservas = jsonObject.getJSONArray("reservas");
-
                 if (estado.equals("correcto")) {
+                    JSONArray reservas = jsonObject.getJSONArray("reservas");
                     for (int i=0; i<reservas.length();i++){
                         JSONObject reserva = reservas.getJSONObject(i);
                         String idReserva = reserva.getString("idTutoria");
@@ -333,7 +344,6 @@ public class MenuProfesorActivity extends AppCompatActivity
             }
         }
     }
-
 
 
     //Funcion para convertir un InputStream a String
