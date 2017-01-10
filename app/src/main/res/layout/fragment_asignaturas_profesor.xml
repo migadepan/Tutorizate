@@ -1,0 +1,65 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.migadepan.tutorizate.AsignaturasProfesorFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:text="Mis Asignaturas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textotitulo" />
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="382dp"
+            android:id="@+id/lista_asignaturas_profesor" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:text="Insartar nueva asignatura"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textitulo" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:text="Nombre Asignatua"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView18"
+                    android:layout_weight="1" />
+
+                <EditText
+                    android:layout_width="124dp"
+                    android:layout_height="wrap_content"
+                    android:text="Name"
+                    android:ems="10"
+                    android:id="@+id/caja_nombre_asignatura"
+                    android:hint="Asignatura"
+                    android:inputType="text" />
+
+                <Button
+                    android:text="+"
+                    android:layout_width="57dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/button" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

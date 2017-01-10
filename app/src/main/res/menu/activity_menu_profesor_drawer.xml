@@ -18,6 +18,14 @@
             android:id="@+id/nav_estado"
             android:icon="@drawable/ic_menu_send"
             android:title="Mi Estado" />
+        <item
+            android:id="@+id/nav_asignaturas"
+            android:icon="@drawable/ic_menu_send"
+            android:title="Mis Asignaturas" />
+        <item
+            android:id="@+id/nav_cerrar_sesion"
+            android:icon="@drawable/ic_menu_send"
+            android:title="Cerrar Sesión" />
 
     </group>
 

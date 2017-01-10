@@ -158,6 +158,12 @@ public class MenuProfesorActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_estado){
 
+        } else if (id == R.id.nav_asignaturas){
+
+        } else if (id == R.id.nav_cerrar_sesion){
+            Intent actividad_logout = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(actividad_logout);
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

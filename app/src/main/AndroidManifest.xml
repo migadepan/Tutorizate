@@ -59,11 +59,11 @@
         </activity>
         <activity
             android:name=".MenuAlumnoActivity"
-            android:label="@string/title_activity_menu_alumno"
+            android:label="Tutorizate"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MenuProfesorActivity"
-            android:label="@string/title_activity_menu_profesor"
+            android:label="Tutorizate"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
