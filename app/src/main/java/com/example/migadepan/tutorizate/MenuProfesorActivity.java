@@ -159,7 +159,12 @@ public class MenuProfesorActivity extends AppCompatActivity
         } else if (id == R.id.nav_estado){
 
         } else if (id == R.id.nav_asignaturas){
-
+            //Mostrar las tutorias en un fragment
+            FragmentManager FM = getSupportFragmentManager();
+            FragmentTransaction FT = FM.beginTransaction();
+            Fragment fragment = new HorarioTutoriaFragment();
+            FT.replace(R.id.fragment_asignaturas_profesor, fragment);
+            FT.commit();
         } else if (id == R.id.nav_cerrar_sesion){
             Intent actividad_logout = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(actividad_logout);
